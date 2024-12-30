@@ -1,4 +1,4 @@
-# React-Based-Web-App-for-Streaming-Movies-and-TV-Shows
+# React-Site-for-Movies-and-TV-streaming
 A modern movie and TV series streaming platform built with React and styled using Tailwind CSS. Features include an intuitive user interface, responsive design, and dynamic content rendering for an engaging browsing and viewing experience.
 
 # React-Based Web App for Streaming Movies and TV Shows
