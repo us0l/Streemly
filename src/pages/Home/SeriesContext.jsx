@@ -15,7 +15,9 @@ export const SeriesProvider = ({ children }) => {
     selectSeries,
   };
 
-  return <SeriesContext.Provider value={value}>{children}</SeriesContext.Provider>;
+  return (
+    <SeriesContext.Provider value={value}>{children}</SeriesContext.Provider>
+  );
 };
 
 SeriesProvider.propTypes = {

@@ -1,12 +1,6 @@
-import {
-  useEffect,
-  useState,
-  useCallback,
-  memo,
-  useRef,
-} from "react";
-import PropTypes from "prop-types";
-import { fetchSeriesDetails } from "../Fetcher";
+import { useEffect, useState, useCallback, memo, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { fetchSeriesDetails } from '../Fetcher';
 import {
   FaRedo,
   FaChevronDown,
@@ -14,9 +8,9 @@ import {
   FaStar,
   FaCalendar,
   FaClock,
-} from "react-icons/fa";
-import Loadingspinner from "../resused/Loadingspinner";
-import VideoPlayer from "./VideoPlayer";
+} from 'react-icons/fa';
+import Loadingspinner from '../resused/Loadingspinner';
+import VideoPlayer from './VideoPlayer';
 
 const MemoizedVideoPlayer = memo(VideoPlayer);
 
@@ -26,17 +20,16 @@ const TvDetails = ({ tvId }) => {
   const [error, setError] = useState(null);
   const [retryLoading, setRetryLoading] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
-    const descriptionRef = useRef(null);
-
+  const descriptionRef = useRef(null);
 
   const loadTvData = useCallback(async () => {
     setLoading(true); // Start loading before fetch
-    setError(null);   // Clear any previous error
+    setError(null); // Clear any previous error
     try {
       const data = await fetchSeriesDetails(tvId);
       setTv(data);
     } catch (err) {
-      setError(`Error fetching TV data: ${err?.message || "Unknown error"}`);
+      setError(`Error fetching TV data: ${err?.message || 'Unknown error'}`);
     } finally {
       setLoading(false);
       setRetryLoading(false);
@@ -47,21 +40,20 @@ const TvDetails = ({ tvId }) => {
     loadTvData();
   }, [loadTvData]);
 
+  const handleToggleDescription = () => {
+    setShowDescription((prevShowDescription) => !prevShowDescription);
+  };
 
-    const handleToggleDescription = () => {
-      setShowDescription((prevShowDescription) => !prevShowDescription);
-    };
+  const truncateDescription = (description, maxLength) => {
+    if (!description || description.length <= maxLength) {
+      return description;
+    }
+    return showDescription
+      ? description
+      : `${description.slice(0, maxLength)}...`;
+  };
 
-    const truncateDescription = (description, maxLength) => {
-      if (!description || description.length <= maxLength) {
-        return description;
-      }
-      return showDescription
-        ? description
-        : `${description.slice(0, maxLength)}...`;
-    };
-
-    const descriptionText = truncateDescription(tv?.overview, 150);
+  const descriptionText = truncateDescription(tv?.overview, 150);
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -80,8 +72,8 @@ const TvDetails = ({ tvId }) => {
             className="w-full bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-black text-white px-6 py-3 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 font-medium"
             disabled={retryLoading}
           >
-            <FaRedo className={`${retryLoading ? "animate-spin" : ""}`} />
-            {retryLoading ? "Retrying..." : "Retry"}
+            <FaRedo className={`${retryLoading ? 'animate-spin' : ''}`} />
+            {retryLoading ? 'Retrying...' : 'Retry'}
           </button>
         </div>
       </div>
@@ -91,7 +83,9 @@ const TvDetails = ({ tvId }) => {
   if (!tv) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <p className="text-gray-300 text-lg font-medium">No TV data available</p>
+        <p className="text-gray-300 text-lg font-medium">
+          No TV data available
+        </p>
       </div>
     );
   }
@@ -113,25 +107,30 @@ const TvDetails = ({ tvId }) => {
           <div className="backdrop-blur rounded-2xl overflow-hidden">
             <div className="p-6 sm:p-8">
               <h2 className="text-xl font-semibold mb-4">About this title</h2>
-              <div className="prose prose-invert max-w-none" ref={descriptionRef}>
+              <div
+                className="prose prose-invert max-w-none"
+                ref={descriptionRef}
+              >
                 <p className="text-gray-300 text-base sm:text-lg leading-relaxed">
-                    {descriptionText}
+                  {descriptionText}
                 </p>
               </div>
-               {tv.overview?.length > 150 && (
-                    <button
-                      onClick={handleToggleDescription}
-                      className="mt-4 text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-colors bg-gray-700/50 hover:bg-gray-700/70"
-                    >
-                      {showDescription ? "Show less" : "Show more"}
-                      {showDescription ? <FaChevronUp /> : <FaChevronDown />}
-                    </button>
-                  )}
+              {tv.overview?.length > 150 && (
+                <button
+                  onClick={handleToggleDescription}
+                  className="mt-4 text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-lg px-4 py-2 text-sm flex items-center gap-2 transition-colors bg-gray-700/50 hover:bg-gray-700/70"
+                >
+                  {showDescription ? 'Show less' : 'Show more'}
+                  {showDescription ? <FaChevronUp /> : <FaChevronDown />}
+                </button>
+              )}
             </div>
             <div className="flex flex-wrap gap-4 mb-6">
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-800/60 rounded-full text-sm">
                 <FaStar className="text-yellow-500" />
-                <span className="font-medium">{tv.vote_average?.toFixed(1)}</span>
+                <span className="font-medium">
+                  {tv.vote_average?.toFixed(1)}
+                </span>
               </span>
               <span className="inline-flex items-center gap-2 px-3 py-1 bg-gray-800/60 rounded-full text-sm">
                 <FaCalendar className="text-gray-400" />

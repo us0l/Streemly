@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
  */
 export const fetchContentByGenre = async (type, genreId, page = 1) => {
   try {
-    const validPage = Math.min(Math.max(1, Math.floor(page)), 500);  // Ensures page is between 1 and 500
+    const validPage = Math.min(Math.max(1, Math.floor(page)), 500); // Ensures page is between 1 and 500
 
     const url = new URL(`${BASE_URL}/discover/${type}`);
     url.searchParams.append('api_key', API_KEY);
@@ -24,9 +24,10 @@ export const fetchContentByGenre = async (type, genreId, page = 1) => {
     const data = await response.json();
     return data.results;
   } catch (error) {
-    const formattedType = typeof type === 'string' && type.length > 0 
-      ? type.charAt(0).toUpperCase() + type.slice(1) 
-      : "Content";
+    const formattedType =
+      typeof type === 'string' && type.length > 0
+        ? type.charAt(0).toUpperCase() + type.slice(1)
+        : 'Content';
     throw new Error(`${formattedType} fetch failed: ${error.message}`);
   }
 };
@@ -45,7 +46,9 @@ export const fetchMovieDetails = async (movieId) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.status_message || `Failed to fetch movie details`);
+      throw new Error(
+        errorData.status_message || `Failed to fetch movie details`
+      );
     }
 
     const movieData = await response.json();
@@ -69,7 +72,9 @@ export const fetchRelatedMovies = async (movieId) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.status_message || `Failed to fetch related movies`);
+      throw new Error(
+        errorData.status_message || `Failed to fetch related movies`
+      );
     }
 
     const relatedData = await response.json();
@@ -78,7 +83,6 @@ export const fetchRelatedMovies = async (movieId) => {
     throw new Error(`Related movies fetch failed: ${error.message}`);
   }
 };
-
 
 /**
  * Fetch details for a specific TV series
@@ -94,7 +98,9 @@ export const fetchSeriesDetails = async (tvId) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.status_message || `Failed to fetch TV series details`);
+      throw new Error(
+        errorData.status_message || `Failed to fetch TV series details`
+      );
     }
 
     const seriesData = await response.json();
@@ -103,9 +109,6 @@ export const fetchSeriesDetails = async (tvId) => {
     throw new Error(`TV series details fetch failed: ${error.message}`);
   }
 };
-
-
-
 
 /**
  * Fetch details for all episodes of each season for a specific TV series
@@ -117,18 +120,23 @@ export const fetchAllEpisodes = async (tvId) => {
     const { seasons } = seriesDetails;
 
     const seasonDetailsPromises = seasons.map(async (season) => {
-      const url = new URL(`${BASE_URL}/tv/${tvId}/season/${season.season_number}`);
+      const url = new URL(
+        `${BASE_URL}/tv/${tvId}/season/${season.season_number}`
+      );
       url.searchParams.append('api_key', API_KEY);
       url.searchParams.append('language', 'en-US');
 
       const response = await fetch(url);
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.status_message || `Failed to fetch season ${season.season_number}`);
+        throw new Error(
+          errorData.status_message ||
+            `Failed to fetch season ${season.season_number}`
+        );
       }
 
       const seasonData = await response.json();
-      return seasonData;  // Contains all episodes for this season
+      return seasonData; // Contains all episodes for this season
     });
 
     const allSeasonsDetails = await Promise.all(seasonDetailsPromises);
@@ -137,8 +145,6 @@ export const fetchAllEpisodes = async (tvId) => {
     throw new Error(`All episodes fetch failed: ${error.message}`);
   }
 };
-
-
 
 /**
  * Fetch related series based on a specific TV series ID
@@ -154,7 +160,9 @@ export const fetchRelatedSeries = async (tvId) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.status_message || `Failed to fetch related TV series`);
+      throw new Error(
+        errorData.status_message || `Failed to fetch related TV series`
+      );
     }
 
     const relatedSeriesData = await response.json();

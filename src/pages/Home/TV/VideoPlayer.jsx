@@ -30,28 +30,30 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
           });
         }
       } catch (error) {
-        console.warn("Unable to modify iframe due to cross-origin restrictions." + error);
+        console.warn(
+          'Unable to modify iframe due to cross-origin restrictions.' + error
+        );
       }
     };
 
     const iframeElement = iframeRef.current;
-    iframeElement?.addEventListener("load", preventIframeRedirects);
-    window.addEventListener("contextmenu", handleContextMenu);
-    window.addEventListener("blur", handleWindowBlur);
+    iframeElement?.addEventListener('load', preventIframeRedirects);
+    window.addEventListener('contextmenu', handleContextMenu);
+    window.addEventListener('blur', handleWindowBlur);
 
     const currentIframeRef = iframeRef.current;
 
-    currentIframeRef?.removeEventListener("load", preventIframeRedirects);
-    iframeElement?.removeEventListener("load", preventIframeRedirects);
-    iframeRef.current?.removeEventListener("load", preventIframeRedirects);
-    window.removeEventListener("contextmenu", handleContextMenu);
-    window.removeEventListener("blur", handleWindowBlur);
+    currentIframeRef?.removeEventListener('load', preventIframeRedirects);
+    iframeElement?.removeEventListener('load', preventIframeRedirects);
+    iframeRef.current?.removeEventListener('load', preventIframeRedirects);
+    window.removeEventListener('contextmenu', handleContextMenu);
+    window.removeEventListener('blur', handleWindowBlur);
   }, []);
 
   const iframeSrc = `https://vidsrc.dev/embed/tv/${tvId}/${season}/${episode}`;
 
   return (
-    <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+    <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
       <iframe
         ref={iframeRef}
         src={iframeSrc}
@@ -68,7 +70,7 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
       />
     </div>
   );
-}
+};
 
 VideoPlayer.propTypes = {
   tvId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,

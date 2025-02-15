@@ -80,8 +80,8 @@ function GenreList({ type, onGenreSelect }) {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           variants={{
             show: {
-              transition: { staggerChildren: 0.05 }
-            }
+              transition: { staggerChildren: 0.05 },
+            },
           }}
           initial="hidden"
           animate="show"
@@ -93,7 +93,7 @@ function GenreList({ type, onGenreSelect }) {
               ref={(el) => (genreRefs.current[index] = el)}
               variants={{
                 hidden: { opacity: 0, scale: 0.2 },
-                show: { opacity: 1, scale: 1 }
+                show: { opacity: 1, scale: 1 },
               }}
               whileTap={{ scale: 0.95 }}
               whileHover={{ scale: 1.05 }}
@@ -103,13 +103,14 @@ function GenreList({ type, onGenreSelect }) {
                 text-[10px] sm:text-xs md:text-sm
                 font-medium transition-all duration-200
                 cursor-pointer select-none whitespace-nowrap
-                ${activeIndex === index
-                  ? 'bg-black text-white shadow-lg ring-2 ring-red-400'
-                  : 'bg-slate-800/50 text-slate-300 hover:bg-purple-600/50 hover:text-white'
+                ${
+                  activeIndex === index
+                    ? 'bg-black text-white shadow-lg ring-2 ring-red-400'
+                    : 'bg-slate-800/50 text-slate-300 hover:bg-purple-600/50 hover:text-white'
                 }
               `}
               role="button"
-              tabIndex={activeIndex === index ? "0" : "-1"}
+              tabIndex={activeIndex === index ? '0' : '-1'}
               onFocus={() => setActiveIndex(index)}
               onClick={() => onGenreSelect(genre.id)}
             >

@@ -24,7 +24,9 @@ const MainContent = ({ activePage, isLoading }) => {
   const showNavigation = !selectedMovie && !selectedSeries; // Only show navigation buttons when no details are selected
 
   return (
-    <main className={`w-full transition-all duration-500 ${showNavigation ? 'pt-20' : 'pt-4'}`}>
+    <main
+      className={`w-full transition-all duration-500 ${showNavigation ? 'pt-20' : 'pt-4'}`}
+    >
       {/* Show movie or series list only when neither movie nor series details are selected */}
       {showNavigation && (
         <div className="gap-12">
@@ -56,7 +58,10 @@ const MainContent = ({ activePage, isLoading }) => {
             <span className="font-medium tracking-wide">Back</span>
           </button>
           {selectedMovie ? (
-            <MovieDetails movieId={selectedMovie.id} closeDetails={closeDetails} />
+            <MovieDetails
+              movieId={selectedMovie.id}
+              closeDetails={closeDetails}
+            />
           ) : (
             <TvDetails tvId={selectedSeries.id} closeDetails={closeDetails} />
           )}
@@ -130,7 +135,14 @@ MainContent.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 };
 
-const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, handlePageChange, scrollToTop }) => {
+const AppContent = ({
+  activePage,
+  scrollPosition,
+  isLoading,
+  handleNavigation,
+  handlePageChange,
+  scrollToTop,
+}) => {
   const { selectedMovie } = useMovie();
   const { selectedSeries } = useSeries();
   const showNavbar = !selectedMovie && !selectedSeries;
@@ -138,8 +150,14 @@ const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, h
   return (
     <div className="min-h-screen relative text-white">
       {/* Navbar */}
-      <nav className={`top-0 left-0 fixed w-full shadow-lg z-50 bg-black/90 ${!showNavbar ? 'hidden' : ''}`}>
-        <Navbar onNavigate={handleNavigation} activePage={activePage} onPageChange={handlePageChange} />
+      <nav
+        className={`top-0 left-0 fixed w-full shadow-lg z-50 bg-black/90 ${!showNavbar ? 'hidden' : ''}`}
+      >
+        <Navbar
+          onNavigate={handleNavigation}
+          activePage={activePage}
+          onPageChange={handlePageChange}
+        />
       </nav>
 
       {/* Navigation Buttons */}
@@ -147,20 +165,22 @@ const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, h
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-40 flex gap-4">
           <button
             onClick={() => handleNavigation('movies')}
-            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${activePage === 'movies'
+            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${
+              activePage === 'movies'
                 ? 'bg-orange-600 shadow-orange-500/30'
                 : 'bg-gray-800/80 hover:bg-gray-700 backdrop-blur-sm'
-              }`}
+            }`}
           >
             <BiMovie className="text-xl sm:text-2xl" />
             Movies
           </button>
           <button
             onClick={() => handleNavigation('series')}
-            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${activePage === 'series'
+            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${
+              activePage === 'series'
                 ? 'bg-orange-600 shadow-orange-500/30'
                 : 'bg-gray-800/80 hover:bg-gray-700 backdrop-blur-sm'
-              }`}
+            }`}
           >
             <BiCameraMovie className="text-xl sm:text-2xl" />
             Series

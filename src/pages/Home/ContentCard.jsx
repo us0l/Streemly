@@ -1,11 +1,11 @@
-import  { useState, memo, useCallback } from 'react';
+import { useState, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
 
 const RatingCircle = ({ rating }) => {
   const percentage = (rating / 10) * 100;
-  
+
   return (
     <div className="relative w-8 h-8 bg-black backdrop-blur-sm rounded-full flex items-center justify-center">
       <svg viewBox="0 0 36 36" className="absolute w-full h-full -rotate-90">
@@ -31,92 +31,103 @@ const RatingCircle = ({ rating }) => {
   );
 };
 
-const ContentCard = memo(({
-  title,
-  poster,
-  rating,
-  onClick = () => {},
-  className = '',
-  placeholderImage = '/assets/images/placeholder.jpg',
-  releaseDate,
-}) => {
-  const [imageState, setImageState] = useState({
-    isLoading: true,
-    hasError: false,
-  });
+const ContentCard = memo(
+  ({
+    title,
+    poster,
+    rating,
+    onClick = () => {},
+    className = '',
+    placeholderImage = '/assets/images/placeholder.jpg',
+    releaseDate,
+  }) => {
+    const [imageState, setImageState] = useState({
+      isLoading: true,
+      hasError: false,
+    });
 
-  const handleImageState = useCallback((type) => {
-    setImageState((prev) => ({
-      ...prev,
-      isLoading: type === 'loading',
-      hasError: type === 'error',
-    }));
-  }, []);
+    const handleImageState = useCallback((type) => {
+      setImageState((prev) => ({
+        ...prev,
+        isLoading: type === 'loading',
+        hasError: type === 'error',
+      }));
+    }, []);
 
-  const handleKeyPress = useCallback((e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick?.();
-    }
-  }, [onClick]);
+    const handleKeyPress = useCallback(
+      (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      },
+      [onClick]
+    );
 
-  const imageSrc = imageState.hasError ? placeholderImage : poster;
-  const currentDate = new Date();
-  const isReleased = releaseDate ? new Date(releaseDate) <= currentDate : true;
+    const imageSrc = imageState.hasError ? placeholderImage : poster;
+    const currentDate = new Date();
+    const isReleased = releaseDate
+      ? new Date(releaseDate) <= currentDate
+      : true;
 
-  // If the movie/series is unreleased, don't render the component
-  if (!isReleased) return null;
+    // If the movie/series is unreleased, don't render the component
+    if (!isReleased) return null;
 
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`group relative w-full overflow-hidden rounded-lg shadow-lg cursor-pointer
+    return (
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={`group relative w-full overflow-hidden rounded-lg shadow-lg cursor-pointer
          transition-transform mb-20 mr-4 ml-3  duration-300 ${className}`}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyPress={handleKeyPress}
-      aria-label={`${title} - Rating: ${rating || 'N/A'}`}
-    >
-      <div className="relative w-full aspect-[2/3]">
-        {imageState.isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-slate-800/90">
-            <div className="animate-pulse rounded-lg w-full h-full bg-gray-700/50" />
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+        onKeyPress={handleKeyPress}
+        aria-label={`${title} - Rating: ${rating || 'N/A'}`}
+      >
+        <div className="relative w-full aspect-[2/3]">
+          {imageState.isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-slate-800/90">
+              <div className="animate-pulse rounded-lg w-full h-full bg-gray-700/50" />
+            </div>
+          )}
+          <img
+            src={imageSrc}
+            alt={`${title} poster`}
+            className={`w-full h-full object-cover transition-all duration-500 ${
+              imageState.isLoading
+                ? 'opacity-0 scale-105'
+                : 'opacity-100 scale-100'
+            }`}
+            onLoad={() => handleImageState('loaded')}
+            onError={() => handleImageState('error')}
+          />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent
+          opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FaPlay className="text-white text-2xl transform group-hover:scale-110 transition-transform duration-300" />
+            </div>
           </div>
-        )}
-        <img
-          src={imageSrc}
-          alt={`${title} poster`}
-          className={`w-full h-full object-cover transition-all duration-500 ${
-            imageState.isLoading ? 'opacity-0 scale-105' : 'opacity-100 scale-100'
-          }`}
-          onLoad={() => handleImageState('loaded')}
-          onError={() => handleImageState('error')}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent
-          opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <FaPlay className="text-white text-2xl transform group-hover:scale-110 transition-transform duration-300" />
+          <div className="absolute bottom-2 left-2">
+            <RatingCircle rating={rating} />
           </div>
         </div>
-        <div className="absolute bottom-2 left-2">
-          <RatingCircle rating={rating} />
+        <div className="p-2 space-y-1">
+          <h3 className="text-white text-sm font-medium line-clamp-1">
+            {title}
+          </h3>
+          {releaseDate && (
+            <span className="text-gray-400 text-xs">
+              {new Date(releaseDate).getFullYear()}
+            </span>
+          )}
         </div>
-      </div>
-      <div className="p-2 space-y-1">
-        <h3 className="text-white text-sm font-medium line-clamp-1">
-          {title}
-        </h3>
-        {releaseDate && (
-          <span className="text-gray-400 text-xs">
-            {new Date(releaseDate).getFullYear()}
-          </span>
-        )}
-      </div>
-    </motion.div>
-  );
-});
+      </motion.div>
+    );
+  }
+);
 
 RatingCircle.propTypes = {
   rating: PropTypes.number,

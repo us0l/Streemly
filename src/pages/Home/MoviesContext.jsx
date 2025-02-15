@@ -15,7 +15,9 @@ export const MovieProvider = ({ children }) => {
     selectMovie,
   };
 
-  return <MovieContext.Provider value={value}>{children}</MovieContext.Provider>;
+  return (
+    <MovieContext.Provider value={value}>{children}</MovieContext.Provider>
+  );
 };
 
 MovieProvider.propTypes = {
