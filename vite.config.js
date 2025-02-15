@@ -6,8 +6,9 @@ export default defineConfig({
   plugins: [react()],
   // vite.config.js
   server: {
-    host: '0.0.0.0' // Expose on all network interfaces
+    // Expose on all network interfaces
+    host: '0.0.0.0',
+    // History API Fallback
+    historyApiFallback: true,
   }
-
-
 })
