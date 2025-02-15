@@ -1,14 +1,7 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const SeriesContext = createContext();
-
-export const useSeries = () => {
-  const context = useContext(SeriesContext);
-  if (!context) {
-    throw new Error('useSeries must be used within a SeriesProvider');
-  }
-  return context;
-};
 
 export const SeriesProvider = ({ children }) => {
   const [selectedSeries, setSelectedSeries] = useState(null);
@@ -24,3 +17,9 @@ export const SeriesProvider = ({ children }) => {
 
   return <SeriesContext.Provider value={value}>{children}</SeriesContext.Provider>;
 };
+
+SeriesProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export { SeriesContext };

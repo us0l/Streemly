@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import ParentComponent from './ParentComponent'
 
 function Home() {
-  const [currentPage, setCurrentPage] = useState('home')
+  const [currentPage] = useState('home')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {

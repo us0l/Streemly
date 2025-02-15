@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import  { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ContentCard from './ContentCard';
 import { fetchContentByGenre } from './Fetcher';
-import { MdError, MdRefresh } from 'react-icons/md';
 import { BiWifi } from 'react-icons/bi';
 
 const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -65,7 +64,7 @@ const ContentGrid = ({ genreId, type, onSelect }) => {
     } finally {
       loadingRef.current = false;
     }
-  }, [genreId, type, state.page, state.uniqueIds]);
+  }, [genreId, type, state.page, state.uniqueIds, state.hasMore]);
 
   const handleObserver = useCallback(
     (entries) => {

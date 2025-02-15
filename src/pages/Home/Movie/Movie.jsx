@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import GenreList from '../Genrelist';
 import ContentGrid from '../ContentGrid';
-import { useMovie } from '../MoviesContext';
+import { useMovie } from '../useMovie';
 
 function Movie() {
   const [selectedGenreId, setSelectedGenreId] = useState(28);

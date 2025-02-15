@@ -1,8 +1,8 @@
 import { useState, forwardRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
-import { useMovie } from './MoviesContext'; // Import Movie context
-import { useSeries } from './SeriesContext'; // Import Series context
+import { useMovie } from './useMovie'; // Import Movie context
+import { useSeries } from './useSeries'; // Import Series context
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -131,7 +131,7 @@ const Search = forwardRef(({ onFocus, onBlur, isActive }, ref) => {
       setResults(filteredResults);
       setSelectedIndex(-1);
     } catch (err) {
-      setError(' Please check your internet connection .');
+      setError(' Please check your internet connection .' + err.message);
       setResults([]);
     } finally {
       setLoading(false);

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import GenreList from '../Genrelist';
 import ContentGrid from '../ContentGrid';
-import { useSeries } from '../SeriesContext';
+import { useSeries } from '../useSeries';
 
 function Series() {
   const [selectedGenreId, setSelectedGenreId] = useState(9648);

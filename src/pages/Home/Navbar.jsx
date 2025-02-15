@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Search from './Search';
 
 function Navbar() {
+  // const [isModalOpen] = useState('modal');
   const [activeElement, setActiveElement] = useState('search');
   const [searchValue, setSearchValue] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -12,7 +13,7 @@ function Navbar() {
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (isModalOpen) return;
+      // if (isModalOpen) return;
       const currentIndex = ['search'].findIndex((el) => el === activeElement);
       const handleNavigation = {
         ArrowRight: () => {

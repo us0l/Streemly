@@ -6,7 +6,6 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
 
   useEffect(() => {
     // Disable window.open
-    const originalWindowOpen = window.open;
     window.open = () => null;
 
     const handleContextMenu = (event) => event.preventDefault();
@@ -31,20 +30,22 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
           });
         }
       } catch (error) {
-        console.warn("Unable to modify iframe due to cross-origin restrictions.");
+        console.warn("Unable to modify iframe due to cross-origin restrictions." + error);
       }
     };
 
-    iframeRef.current?.addEventListener("load", preventIframeRedirects);
+    const iframeElement = iframeRef.current;
+    iframeElement?.addEventListener("load", preventIframeRedirects);
     window.addEventListener("contextmenu", handleContextMenu);
     window.addEventListener("blur", handleWindowBlur);
 
-    return () => {
-      window.open = originalWindowOpen;
-      iframeRef.current?.removeEventListener("load", preventIframeRedirects);
-      window.removeEventListener("contextmenu", handleContextMenu);
-      window.removeEventListener("blur", handleWindowBlur);
-    };
+    const currentIframeRef = iframeRef.current;
+
+    currentIframeRef?.removeEventListener("load", preventIframeRedirects);
+    iframeElement?.removeEventListener("load", preventIframeRedirects);
+    iframeRef.current?.removeEventListener("load", preventIframeRedirects);
+    window.removeEventListener("contextmenu", handleContextMenu);
+    window.removeEventListener("blur", handleWindowBlur);
   }, []);
 
   const iframeSrc = `https://vidsrc.dev/embed/tv/${tvId}/${season}/${episode}`;

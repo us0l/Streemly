@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Movie from './Movie/Movie';
 import Series from './TV/Series';
 import MovieDetails from './Movie/MovieDetails';
 import TvDetails from './TV/TvDetails';
-import { useMovie } from './MoviesContext';
-import { useSeries } from './SeriesContext';
+import { useMovie } from './useMovie';
+import { useSeries } from './useSeries';
 import { BiMovie, BiCameraMovie, BiUpArrowAlt } from 'react-icons/bi';
 import { SeriesProvider } from './SeriesContext';
 import { MovieProvider } from './MoviesContext';
@@ -70,10 +71,16 @@ const MainContent = ({ activePage, isLoading }) => {
   );
 };
 
+MainContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
+
 function ParentComponent() {
   const [activePage, setActivePage] = useState('movies');
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState('home');
 
   const handleScroll = useCallback(() => {
@@ -118,9 +125,14 @@ function ParentComponent() {
   );
 }
 
+MainContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
+
 const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, handlePageChange, scrollToTop }) => {
-  const { selectedMovie, selectMovie } = useMovie();
-  const { selectedSeries, selectSeries } = useSeries();
+  const { selectedMovie } = useMovie();
+  const { selectedSeries } = useSeries();
   const showNavbar = !selectedMovie && !selectedSeries;
 
   return (
@@ -171,6 +183,15 @@ const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, h
       <MainContent activePage={activePage} isLoading={isLoading} />
     </div>
   );
+};
+
+AppContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  scrollPosition: PropTypes.number.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleNavigation: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  scrollToTop: PropTypes.func.isRequired,
 };
 
 export default ParentComponent;

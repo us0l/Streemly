@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from 'react';
+import  { useState, memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
