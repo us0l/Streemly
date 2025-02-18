@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ContentCard from './ContentCard';
 import { fetchContentByGenre } from './Fetcher';
-import { MdError, MdRefresh } from 'react-icons/md';
 import { BiWifi } from 'react-icons/bi';
 
 const POSTER_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -11,14 +10,11 @@ const MAX_PAGES = 500;
 const ErrorWarning = () => (
   <div className="flex flex-col items-center justify-center space-y-2 p-4  max-w-xs mx-auto">
     <div className="relative">
-      
       <BiWifi className="text-red-400 w-6 h-10 absolute -top-1 mb-5 -right-1 animate-bounce" />
     </div>
     <div className="text-center space-y-1">
       <h3 className="text-red-700 mt-6 text-md font-bold">Connection Error</h3>
-      
     </div>
-    
   </div>
 );
 
@@ -65,7 +61,7 @@ const ContentGrid = ({ genreId, type, onSelect }) => {
     } finally {
       loadingRef.current = false;
     }
-  }, [genreId, type, state.page, state.uniqueIds]);
+  }, [genreId, type, state.page, state.uniqueIds, state.hasMore]);
 
   const handleObserver = useCallback(
     (entries) => {
@@ -128,8 +124,8 @@ const ContentGrid = ({ genreId, type, onSelect }) => {
   const getItemsPerRow = () => {
     if (window.innerWidth >= 1280) return 6; // xl
     if (window.innerWidth >= 1024) return 5; // lg
-    if (window.innerWidth >= 768) return 4;  // md
-    return 3;                                
+    if (window.innerWidth >= 768) return 4; // md
+    return 3;
   };
 
   const renderContent = () => {
@@ -163,7 +159,10 @@ const ContentGrid = ({ genreId, type, onSelect }) => {
     if (missingItems < itemsPerRow) {
       for (let i = 0; i < missingItems; i++) {
         items.push(
-          <div key={`placeholder-${i}`} className="aspect-[2/3] min-h-[200px] w-full mb-4">
+          <div
+            key={`placeholder-${i}`}
+            className="aspect-[2/3] min-h-[200px] w-full mb-4"
+          >
             {generatePlaceholder()}
           </div>
         );
@@ -183,7 +182,9 @@ const ContentGrid = ({ genreId, type, onSelect }) => {
           <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-purple-500 border-t-transparent shadow-lg" />
         </div>
       )}
-      {state.error && <ErrorWarning onRetry={loadContent} errorMessage={state.error} />}
+      {state.error && (
+        <ErrorWarning onRetry={loadContent} errorMessage={state.error} />
+      )}
     </div>
   );
 };

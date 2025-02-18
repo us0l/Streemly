@@ -1,8 +1,8 @@
 import { useState, forwardRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
-import { useMovie } from './MoviesContext'; // Import Movie context
-import { useSeries } from './SeriesContext'; // Import Series context
+import { useMovie } from './useMovie'; // Import Movie context
+import { useSeries } from './useSeries'; // Import Series context
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -62,7 +62,9 @@ const SearchResults = ({ results, selectedIndex, onMouseEnter, onClick }) => {
         className="w-16 h-24 rounded md:w-24 md:h-32"
       />
       <div className="ml-4 flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-white">{item.title || item.name}</h3>
+        <h3 className="text-sm font-semibold text-white">
+          {item.title || item.name}
+        </h3>
         {item.vote_average && (
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-400">Rating:</span>
@@ -71,7 +73,9 @@ const SearchResults = ({ results, selectedIndex, onMouseEnter, onClick }) => {
             </span>
           </div>
         )}
-        <span className="text-xs text-gray-500 capitalize">{item.media_type}</span>
+        <span className="text-xs text-gray-500 capitalize">
+          {item.media_type}
+        </span>
         {item.release_date && (
           <span className="text-xs text-gray-400">
             {new Date(item.release_date).getFullYear()}
@@ -121,51 +125,56 @@ const Search = forwardRef(({ onFocus, onBlur, isActive }, ref) => {
         `${BASE_URL}/search/multi?api_key=${API_KEY}&query=${encodeURIComponent(searchQuery)}&language=en-US&page=1&include_adult=false`
       );
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
       const filteredResults = data.results
-        .filter(item => ['movie', 'tv'].includes(item.media_type))
+        .filter((item) => ['movie', 'tv'].includes(item.media_type))
         .slice(0, 8);
 
       setResults(filteredResults);
       setSelectedIndex(-1);
     } catch (err) {
-      setError(' Please check your internet connection .');
+      setError(' Please check your internet connection .' + err.message);
       setResults([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyNavigation = useCallback((e) => {
-    if (results.length === 0) return;
+  const handleKeyNavigation = useCallback(
+    (e) => {
+      if (results.length === 0) return;
 
-    const keyHandlers = {
-      ArrowDown: () => {
-        e.preventDefault();
-        setSelectedIndex(prev => Math.min(prev + 1, results.length - 1));
-      },
-      ArrowUp: () => {
-        e.preventDefault();
-        setSelectedIndex(prev => Math.max(prev - 1, 0));
-      },
-      Enter: () => {
-        if (selectedIndex >= 0) {
-          const selectedItem = results[selectedIndex];
-          const handler = selectedItem.media_type === 'movie' ? selectMovie : selectSeries;
-          handler(selectedItem);
+      const keyHandlers = {
+        ArrowDown: () => {
+          e.preventDefault();
+          setSelectedIndex((prev) => Math.min(prev + 1, results.length - 1));
+        },
+        ArrowUp: () => {
+          e.preventDefault();
+          setSelectedIndex((prev) => Math.max(prev - 1, 0));
+        },
+        Enter: () => {
+          if (selectedIndex >= 0) {
+            const selectedItem = results[selectedIndex];
+            const handler =
+              selectedItem.media_type === 'movie' ? selectMovie : selectSeries;
+            handler(selectedItem);
+            clearSearch();
+          }
+        },
+        Escape: () => {
           clearSearch();
-        }
-      },
-      Escape: () => {
-        clearSearch();
-      }
-    };
+        },
+      };
 
-    const handler = keyHandlers[e.key];
-    if (handler) handler();
-  }, [results, selectedIndex, selectMovie, selectSeries]);
+      const handler = keyHandlers[e.key];
+      if (handler) handler();
+    },
+    [results, selectedIndex, selectMovie, selectSeries]
+  );
 
   const clearSearch = () => {
     setQuery('');
@@ -182,17 +191,23 @@ const Search = forwardRef(({ onFocus, onBlur, isActive }, ref) => {
     }
   }, [query, debouncedSearch]);
 
-  const handleItemSelection = useCallback((item) => {
-    const handler = item.media_type === 'movie' ? selectMovie : selectSeries;
-    handler(item);
-    clearSearch();
-  }, [selectMovie, selectSeries]);
+  const handleItemSelection = useCallback(
+    (item) => {
+      const handler = item.media_type === 'movie' ? selectMovie : selectSeries;
+      handler(item);
+      clearSearch();
+    },
+    [selectMovie, selectSeries]
+  );
 
-  const searchInputClasses = useMemo(() => `
+  const searchInputClasses = useMemo(
+    () => `
     w-full bg-gray-800 text-white px-6 py-1.5 rounded-full text-sm
     focus:outline-none focus:ring-2 focus:ring-red-600 transition-all duration-200
     ${isActive ? 'ring-2 ring-white' : ''}
-  `, [isActive]);
+  `,
+    [isActive]
+  );
 
   return (
     <div className="relative bg-black/90 w-full px-2 py-2">
@@ -257,12 +272,12 @@ SearchResults.propTypes = {
       poster_path: PropTypes.string,
       vote_average: PropTypes.number,
       media_type: PropTypes.string.isRequired,
-      release_date: PropTypes.string
+      release_date: PropTypes.string,
     })
   ).isRequired,
   selectedIndex: PropTypes.number.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 Search.propTypes = {
@@ -270,7 +285,6 @@ Search.propTypes = {
   onBlur: PropTypes.func,
   isActive: PropTypes.bool,
 };
-
 
 Search.displayName = 'Search';
 

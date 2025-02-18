@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Search from './Search';
 
 function Navbar() {
+  // const [isModalOpen] = useState('modal');
   const [activeElement, setActiveElement] = useState('search');
   const [searchValue, setSearchValue] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -12,7 +13,7 @@ function Navbar() {
 
   const handleKeyDown = useCallback(
     (e) => {
-      if (isModalOpen) return;
+      // if (isModalOpen) return;
       const currentIndex = ['search'].findIndex((el) => el === activeElement);
       const handleNavigation = {
         ArrowRight: () => {
@@ -35,8 +36,7 @@ function Navbar() {
           if (currentElement === 'search') {
             setIsSearchActive(true);
             navigationRefs.current.search?.focus();
-          } 
-
+          }
         },
         Escape: () => {
           if (isSearchActive) {
@@ -45,14 +45,13 @@ function Navbar() {
             setActiveElement('search');
             navigationRefs.current.search?.focus();
           }
-        }
+        },
       };
       handleNavigation[e.key]?.();
     },
     [activeElement, isSearchActive]
   );
 
-  
   const setRef = useCallback(
     (id) => (el) => {
       navigationRefs.current[id] = el;
@@ -69,7 +68,6 @@ function Navbar() {
     if (!isSearchActive) setActiveElement('search');
   }, [isSearchActive]);
 
-  
   return (
     <div
       className="fixed w-full z-50"
@@ -90,7 +88,7 @@ function Navbar() {
 }
 
 Navbar.propTypes = {
-  onNavigate: PropTypes.func.isRequired
+  onNavigate: PropTypes.func.isRequired,
 };
 
 export default React.memo(Navbar);

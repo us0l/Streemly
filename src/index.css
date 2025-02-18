@@ -2,27 +2,25 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
 body {
   background-color: black;
 }
 .fade-in {
-    animation: fadeIn 0.2s ease-out forwards;
-    will-change: transform, opacity;
-  }
+  animation: fadeIn 0.2s ease-out forwards;
+  will-change: transform, opacity;
+}
 
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  /* Add this to your CSS file */
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Add this to your CSS file */
 @media (max-width: 640px) {
   .genre-item {
     white-space: nowrap; /* Prevent wrapping on small screens */
@@ -62,13 +60,13 @@ body {
 }
 
 .genre-item {
-  outline: none;               /* Remove the default focus outline */
-  caret-color: transparent;     /* Hide the blinking caret */
+  outline: none; /* Remove the default focus outline */
+  caret-color: transparent; /* Hide the blinking caret */
 }
 
 .genre-item:focus {
-  outline: 2px solid #8b5cf6;   /* Customize focus outline to match the color scheme */
-  caret-color: transparent;     /* Ensures caret stays hidden on focus */
+  outline: 2px solid #8b5cf6; /* Customize focus outline to match the color scheme */
+  caret-color: transparent; /* Ensures caret stays hidden on focus */
 }
 @keyframes fadeIn {
   from {

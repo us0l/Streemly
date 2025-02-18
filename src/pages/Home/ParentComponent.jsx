@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import Movie from './Movie/Movie';
 import Series from './TV/Series';
 import MovieDetails from './Movie/MovieDetails';
 import TvDetails from './TV/TvDetails';
-import { useMovie } from './MoviesContext';
-import { useSeries } from './SeriesContext';
+import { useMovie } from './useMovie';
+import { useSeries } from './useSeries';
 import { BiMovie, BiCameraMovie, BiUpArrowAlt } from 'react-icons/bi';
 import { SeriesProvider } from './SeriesContext';
 import { MovieProvider } from './MoviesContext';
@@ -23,7 +24,9 @@ const MainContent = ({ activePage, isLoading }) => {
   const showNavigation = !selectedMovie && !selectedSeries; // Only show navigation buttons when no details are selected
 
   return (
-    <main className={`w-full transition-all duration-500 ${showNavigation ? 'pt-20' : 'pt-4'}`}>
+    <main
+      className={`w-full transition-all duration-500 ${showNavigation ? 'pt-20' : 'pt-4'}`}
+    >
       {/* Show movie or series list only when neither movie nor series details are selected */}
       {showNavigation && (
         <div className="gap-12">
@@ -55,7 +58,10 @@ const MainContent = ({ activePage, isLoading }) => {
             <span className="font-medium tracking-wide">Back</span>
           </button>
           {selectedMovie ? (
-            <MovieDetails movieId={selectedMovie.id} closeDetails={closeDetails} />
+            <MovieDetails
+              movieId={selectedMovie.id}
+              closeDetails={closeDetails}
+            />
           ) : (
             <TvDetails tvId={selectedSeries.id} closeDetails={closeDetails} />
           )}
@@ -70,10 +76,16 @@ const MainContent = ({ activePage, isLoading }) => {
   );
 };
 
+MainContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
+
 function ParentComponent() {
   const [activePage, setActivePage] = useState('movies');
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState('home');
 
   const handleScroll = useCallback(() => {
@@ -118,16 +130,34 @@ function ParentComponent() {
   );
 }
 
-const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, handlePageChange, scrollToTop }) => {
-  const { selectedMovie, selectMovie } = useMovie();
-  const { selectedSeries, selectSeries } = useSeries();
+MainContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
+
+const AppContent = ({
+  activePage,
+  scrollPosition,
+  isLoading,
+  handleNavigation,
+  handlePageChange,
+  scrollToTop,
+}) => {
+  const { selectedMovie } = useMovie();
+  const { selectedSeries } = useSeries();
   const showNavbar = !selectedMovie && !selectedSeries;
 
   return (
     <div className="min-h-screen relative text-white">
       {/* Navbar */}
-      <nav className={`top-0 left-0 fixed w-full shadow-lg z-50 bg-black/90 ${!showNavbar ? 'hidden' : ''}`}>
-        <Navbar onNavigate={handleNavigation} activePage={activePage} onPageChange={handlePageChange} />
+      <nav
+        className={`top-0 left-0 fixed w-full shadow-lg z-50 bg-black/90 ${!showNavbar ? 'hidden' : ''}`}
+      >
+        <Navbar
+          onNavigate={handleNavigation}
+          activePage={activePage}
+          onPageChange={handlePageChange}
+        />
       </nav>
 
       {/* Navigation Buttons */}
@@ -135,20 +165,22 @@ const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, h
         <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-40 flex gap-4">
           <button
             onClick={() => handleNavigation('movies')}
-            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${activePage === 'movies'
+            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${
+              activePage === 'movies'
                 ? 'bg-orange-600 shadow-orange-500/30'
                 : 'bg-gray-800/80 hover:bg-gray-700 backdrop-blur-sm'
-              }`}
+            }`}
           >
             <BiMovie className="text-xl sm:text-2xl" />
             Movies
           </button>
           <button
             onClick={() => handleNavigation('series')}
-            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${activePage === 'series'
+            className={`flex items-center justify-center gap-2 w-full px-4 py-3 text-white rounded-xl font-medium text-sm sm:text-base transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 hover:shadow-xl ${
+              activePage === 'series'
                 ? 'bg-orange-600 shadow-orange-500/30'
                 : 'bg-gray-800/80 hover:bg-gray-700 backdrop-blur-sm'
-              }`}
+            }`}
           >
             <BiCameraMovie className="text-xl sm:text-2xl" />
             Series
@@ -171,6 +203,15 @@ const AppContent = ({ activePage, scrollPosition, isLoading, handleNavigation, h
       <MainContent activePage={activePage} isLoading={isLoading} />
     </div>
   );
+};
+
+AppContent.propTypes = {
+  activePage: PropTypes.string.isRequired,
+  scrollPosition: PropTypes.number.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleNavigation: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  scrollToTop: PropTypes.func.isRequired,
 };
 
 export default ParentComponent;

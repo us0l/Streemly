@@ -1,4 +1,3 @@
-
 const VALID_TYPES = ['movie', 'tv'];
 
 // Static mapping of genres
@@ -22,7 +21,7 @@ const GENRES = {
     { id: 10770, name: 'TV Movie' },
     { id: 53, name: 'Thriller' },
     { id: 10752, name: 'War' },
-    { id: 37, name: 'Western' }
+    { id: 37, name: 'Western' },
   ],
   tv: [
     { id: 10759, name: 'Action & Adventure' },
@@ -40,14 +39,16 @@ const GENRES = {
     { id: 10766, name: 'Soap' },
     { id: 37, name: 'Talk' },
     { id: 10767, name: 'War & Politics' },
-    { id: 10768, name: 'Western' }
-  ]
+    { id: 10768, name: 'Western' },
+  ],
 };
 
 export const fetchGenres = async (type) => {
   // Validate media type
   if (!VALID_TYPES.includes(type)) {
-    throw new Error(`Invalid type: ${type}. Must be one of: ${VALID_TYPES.join(', ')}`);
+    throw new Error(
+      `Invalid type: ${type}. Must be one of: ${VALID_TYPES.join(', ')}`
+    );
   }
 
   // Return the genres from the static mapping
