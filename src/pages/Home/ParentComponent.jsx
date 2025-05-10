@@ -27,7 +27,7 @@ const MainContent = ({ activePage, isLoading }) => {
     <main
       className={`w-full transition-all duration-500 ${showNavigation ? 'pt-20' : 'pt-4'}`}
     >
-      {/* Show movie or series list only when neither movie nor series details are selected */}
+      {/* Show cmovie or series list only when neither movie nor series details are selected */}
       {showNavigation && (
         <div className="gap-12">
           {activePage === 'movies' && <Movie />}
