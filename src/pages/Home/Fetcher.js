@@ -168,6 +168,6 @@ export const fetchRelatedSeries = async (tvId) => {
     const relatedSeriesData = await response.json();
     return relatedSeriesData.results;
   } catch (error) {
-    throw new Error(`Related TV series fetch failed: ${error.message}`);
+    throw new Error(`Failed to fetch related TV series: ${error.message}`);
   }
 };
