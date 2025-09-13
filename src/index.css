@@ -39,7 +39,7 @@ body {
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(107, 114, 128, 0.5) transparent;
+  scrollbar-color: rgba(243, 212, 38, 0.925) transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -51,12 +51,12 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(107, 114, 128, 0.5);
+  background-color: rgba(243, 212, 38, 0.925);
   border-radius: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(107, 114, 128, 0.7);
+  background-color: rgba(243, 212, 38, 0.925);
 }
 
 .genre-item {
@@ -65,7 +65,7 @@ body {
 }
 
 .genre-item:focus {
-  outline: 2px solid #8b5cf6; /* Customize focus outline to match the color scheme */
+  outline: 2px solid #f3d426ec; /* Customize focus outline to match the color scheme */
   caret-color: transparent; /* Ensures caret stays hidden on focus */
 }
 @keyframes fadeIn {
